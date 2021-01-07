@@ -26,8 +26,7 @@ dependencies:
   build_runner: ^1.9.0
   json_serializable: ^3.5.0
   json_annotation: ^3.1.0
-  retrofit_flutter:
-    path: ../
+  retrofit_flutter: ^0.0.3
 
 dev_dependencies:
   flutter_test:
