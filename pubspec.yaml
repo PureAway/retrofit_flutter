@@ -1,8 +1,7 @@
 name: retrofit_flutter
 description: retrofit for flutter
 version: 0.0.1
-author:zcy
-homepage:
+homepage: https://github.com/PureAway/retrofit_flutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
