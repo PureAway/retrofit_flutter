@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:dio/dio.dart';
 
 /// A holder that includes all http methods which are supported by retrofit.
 class HttpMethod {
@@ -45,7 +46,7 @@ class RestApi {
   /// * Endpoint: `foo/bar/`
   /// * Result: `http://example.com/foo/bar/`
   ///
-  /// When you don't specify the [baseUrl]. The [dio] instance passed to the constructor should have it defined.
+  /// When you don't specify the [baseUrl]. The [_dio] instance passed to the constructor should have it defined.
   /// Otherwise the `path` field of any [HttpMethod] like [POST] should have the full URL.
 
   final String baseUrl;
@@ -160,6 +161,14 @@ class Header {
   const Header(this.value);
 }
 
+/// To set the Cache with dio-http-cache in to Dio RequestOptions
+@immutable
+class Cache {
+  final String value;
+
+  const Cache(this.value);
+}
+
 /// Use this annotation on a service method param when you want to directly control the request body
 /// of a POST/PUT request (instead of sending in as request parameters or form-style request
 /// body).
@@ -193,6 +202,11 @@ class Url {
   final String url;
 
   const Url([this.url]);
+}
+
+@immutable
+class BaseUrl {
+  const BaseUrl();
 }
 
 /// Named replacement in a URL path segment.
@@ -278,4 +292,47 @@ class Part {
   final String contentType;
 
   const Part({this.value, this.name, this.fileName, this.contentType});
+}
+
+/// Extra data that will be passed to dio's request, response, transformer and interceptors.
+@immutable
+class Extra {
+  final Map<String, Object> data;
+
+  /// Extra data that will be passed to dio's request, response, transformer and interceptors.
+  const Extra(this.data);
+}
+
+@immutable
+class CancelRequest {
+  const CancelRequest();
+}
+
+@immutable
+class ReceiveProgress {
+  const ReceiveProgress();
+}
+
+@immutable
+class SendProgress {
+  const SendProgress();
+}
+
+@immutable
+class DioResponseType {
+  final ResponseType responseType;
+
+  const DioResponseType(this.responseType);
+}
+
+class HttpResponse<T> {
+  final T data;
+  final Response response;
+
+  HttpResponse(this.data, this.response);
+}
+
+@immutable
+class DioOptions {
+  const DioOptions();
 }

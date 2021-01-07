@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'api_helper.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -51,6 +53,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  var _weather = '空白';
 
   void _incrementCounter() {
     setState(() {
@@ -60,6 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ApiHelper().get15DaysWeatherByArea('西安').then((value) {
+      setState(() {
+        _weather = value.toJson().toString();
+      });
     });
   }
 
@@ -104,7 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            Image.asset('images/chufang.png', package: 'retrofit_flutter')
+            Image.asset(
+              'images/icon_star.png',
+              package: 'retrofit_flutter',
+              width: 20,
+              height: 20,
+              fit: BoxFit.fill,
+            ),
+            Text('$_weather')
           ],
         ),
       ),
