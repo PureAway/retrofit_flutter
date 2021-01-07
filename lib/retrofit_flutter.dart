@@ -1,2 +1,2 @@
-export 'package:retrofit_flutter/src/http.dart';
-export 'package:retrofit_flutter/src/dio.dart';
+export 'package:retrofit_flutter/src/generator.dart';
+export 'package:retrofit_flutter/src/retrofit.dart';

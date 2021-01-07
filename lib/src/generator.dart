@@ -11,7 +11,7 @@ import 'package:dart_style/dart_style.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tuple/tuple.dart';
 import 'package:dio/dio.dart';
-import 'package:retrofit_flutter/retrofit.dart' as retrofit;
+import 'retrofit.dart' as retrofit;
 
 class RetrofitOptions {
   final bool autoCastResponse;
@@ -310,7 +310,6 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
     });
   }
 
-
   Expression _generatePath(MethodElement m, ConstantReader method) {
     final paths = _getAnnotations(m, retrofit.Path);
     String definePath = method.peek("path").stringValue;
@@ -344,6 +343,15 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
     Map<String, Expression> headers = _generateHeaders(m);
     _generateRequestBody(blocks, _localDataVar, m);
 
+    final _baseUrl = _getAnnotation(m, retrofit.BaseUrl)?.item1;
+    var _hasBaseUrl = false;
+    if (_baseUrl != null) {
+      if (const TypeChecker.fromRuntime(String)
+          .isAssignableFromType(_baseUrl.type)) {
+        _hasBaseUrl = true;
+      }
+    }
+
     final extraOptions = {
       "method": literal(httpMethod.peek("method").stringValue),
       "headers": literalMap(
@@ -352,11 +360,6 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
           refer("dynamic")),
       _extraVar: refer(_localExtraVar),
     };
-
-    if (url != null) {
-      extraOptions[_baseUrlVar] =
-          literal(url.peek("url").stringValue);
-    }
 
     final contentTypeInHeader = headers.entries
         .firstWhere((i) => "Content-Type".toLowerCase() == i.key.toLowerCase(),
@@ -372,11 +375,14 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
           literal(contentType.peek("mime").stringValue);
     }
 
-    if(url!=null){
-      extraOptions[_baseUrlVar] =
-          literal(url.peek("url").stringValue);
-    }else{
-    extraOptions[_baseUrlVar] = refer(_baseUrlVar);
+    if (url != null) {
+      extraOptions[_baseUrlVar] = literal(url.peek("url").stringValue);
+    } else {
+      extraOptions[_baseUrlVar] = refer(_baseUrlVar);
+    }
+
+    if (_hasBaseUrl) {
+      extraOptions[_baseUrlVar] = refer(_baseUrl.displayName);
     }
 
     final responseType = _getResponseTypeAnnotation(m);
@@ -609,12 +615,10 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
             case retrofit.Parser.MapSerializable:
               blocks.add(
                   Code("final value = $returnType.fromMap($_resultVar.data);"));
-              print('guokai ${returnType} Parser.MapSerializable');
               break;
             case retrofit.Parser.JsonSerializable:
               blocks.add(Code(
                   "final value = $returnType.fromJson($_resultVar.data);"));
-              print('guokai ${returnType} Parser.JsonSerializable');
               blocks.add(Code("value.statusCode = $_resultVar.statusCode;"));
               break;
             case retrofit.Parser.DartJsonMapper:
@@ -1024,9 +1028,14 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
 
     final annosInParam = _getAnnotations(m, retrofit.Header);
     final headersInParams = annosInParam.map((k, v) {
-      final value = v.peek("value")?.stringValue ?? k.displayName;
-      return MapEntry(value, refer(k.displayName));
+      final key = v.peek("value")?.stringValue ?? k.displayName;
+      headers.keys
+          .where((element) => element.toString() == key.toString())
+          .toList()
+          .forEach(headers.remove);
+      return MapEntry(key, refer(k.displayName));
     });
+
     headers.addAll(headersInParams);
     return headers;
   }
@@ -1035,40 +1044,60 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
       MethodElement m, List<Code> blocks, String localExtraVar) {
     final extra = _typeChecker(retrofit.Extra)
         .firstAnnotationOf(m, throwOnUnresolved: false);
-
     if (extra != null) {
       final c = ConstantReader(extra);
-      blocks.add(literalMap(
-        c.peek('data')?.mapValue?.map((k, v) {
-              return MapEntry(
-                k.toStringValue() ??
-                    (throw InvalidGenerationSourceError(
-                      'Invalid key for extra Map, only `String` keys are supported',
-                      element: m,
-                      todo: 'Make sure all keys are of string type',
-                    )),
-                v.toBoolValue() ??
-                    v.toDoubleValue() ??
-                    v.toIntValue() ??
-                    v.toStringValue() ??
-                    v.toListValue() ??
-                    v.toMapValue() ??
-                    v.toSetValue() ??
-                    v.toSymbolValue() ??
-                    v.toTypeValue() ??
-                    Code(revivedLiteral(v)),
-              );
-            }) ??
-            {},
-        refer('String'),
-        refer('dynamic'),
-      ).assignConst(localExtraVar).statement);
+      final extraMap = c.peek('data')?.mapValue?.map((k, v) {
+            return MapEntry(
+              literalString(k.toStringValue(), raw: true) ??
+                  (throw InvalidGenerationSourceError(
+                    'Invalid key for extra Map, only `String` keys are supported',
+                    element: m,
+                    todo: 'Make sure all keys are of string type',
+                  )),
+              v.toBoolValue() ??
+                  v.toDoubleValue() ??
+                  v.toIntValue() ??
+                  v.toStringValue() ??
+                  v.toListValue() ??
+                  v.toMapValue() ??
+                  v.toSetValue() ??
+                  v.toSymbolValue() ??
+                  v.toTypeValue() ??
+                  Code('const ${revivedLiteral(v)}'),
+            );
+          }) ??
+          {};
+      final annosInParam = _getAnnotations(m, retrofit.Cache);
+      final cacheInParams = annosInParam.map((k, v) {
+        final value = v.peek("value")?.stringValue ?? k.displayName;
+        final key = literalString(value, raw: true);
+        extraMap.keys
+            .where((element) => element.toString() == key.toString())
+            .toList()
+            .forEach(extraMap.remove);
+        return MapEntry(key, refer(k.displayName));
+      });
+      if (cacheInParams.isNotEmpty) {
+        extraMap.addAll(cacheInParams);
+      }
+      blocks.add(literalMap(extraMap).assignFinal(localExtraVar).statement);
     } else {
-      blocks.add(literalMap(
-        {},
-        refer('String'),
-        refer('dynamic'),
-      ).assignConst(localExtraVar).statement);
+      final extraMap = {};
+      final annosInParam = _getAnnotations(m, retrofit.Cache);
+      final cacheInParams = annosInParam.map((k, v) {
+        final value = v.peek("value")?.stringValue ?? k.displayName;
+        return MapEntry(literalString(value, raw: true), refer(k.displayName));
+      });
+      if (cacheInParams.isNotEmpty) {
+        extraMap.addAll(cacheInParams);
+        blocks.add(literalMap(extraMap).assignFinal(localExtraVar).statement);
+      } else {
+        blocks.add(literalMap(
+          {},
+          refer('String'),
+          refer('dynamic'),
+        ).assignConst(localExtraVar).statement);
+      }
     }
   }
 }

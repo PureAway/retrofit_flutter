@@ -1,8 +1,8 @@
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
   retrofit:
-    target: ":retrofit"
-    import: "package:retrofit/retrofit_generator.dart"
+    target: ":retrofit_flutter"
+    import: "package:retrofit_flutter/retrofit_generator.dart"
     builder_factories: ["retrofitBuilder"]
     build_extensions: { ".dart": [".retrofit.g.part"] }
     auto_apply: dependents
