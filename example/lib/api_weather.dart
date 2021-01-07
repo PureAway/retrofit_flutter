@@ -9,7 +9,7 @@ part 'api_weather.g.dart';
 abstract class WeatherApi {
   factory WeatherApi(Dio dio, {String baseUrl}) = _WeatherApi;
 
-  @POST("/api/thirdpay/cart/batchAdd")
-  Future<WeatherRes> get15DaysWeatherByArea(
-      @BaseUrl() String baseUrl, String apiKey, String area);
+  @GET("/common/weather/get15DaysWeatherByArea")
+  Future<dynamic> get15DaysWeatherByArea(@BaseUrl() String baseUrl,
+      @Query('apiKey') String apiKey, @Query('area') String area);
 }

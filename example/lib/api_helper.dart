@@ -20,7 +20,7 @@ class ApiHelper {
   }
 
   /// 发送短信验证码
-  Future<WeatherRes> get15DaysWeatherByArea(String area) async {
+  Future<dynamic> get15DaysWeatherByArea(String area) async {
     const apiKey = 'y2vSiRp765e535d7cf39d0eb2309f204e65bb67d9f6ce82';
     return api.get15DaysWeatherByArea('https://api.apishop.net', apiKey, area);
   }

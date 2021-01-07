@@ -26,12 +26,12 @@ dependencies:
   build_runner: ^1.9.0
   json_serializable: ^3.5.0
   json_annotation: ^3.1.0
+  retrofit_flutter:
+    path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  retrofit_flutter:
-    path: ../
 
 flutter:
   uses-material-design: true

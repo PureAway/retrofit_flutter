@@ -17,24 +17,22 @@ class _WeatherApi implements WeatherApi {
   String baseUrl;
 
   @override
-  Future<WeatherRes> get15DaysWeatherByArea(baseUrl, apiKey, area) async {
+  Future<dynamic> get15DaysWeatherByArea(baseUrl, apiKey, area) async {
     ArgumentError.checkNotNull(baseUrl, 'baseUrl');
     ArgumentError.checkNotNull(apiKey, 'apiKey');
     ArgumentError.checkNotNull(area, 'area');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'apiKey': apiKey, r'area': area};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/api/thirdpay/cart/batchAdd',
+    final _result = await _dio.request('/common/weather/get15DaysWeatherByArea',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'POST',
+            method: 'GET',
             headers: <String, dynamic>{},
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = WeatherRes.fromJson(_result.data);
-    value.statusCode = _result.statusCode;
+    final value = _result.data;
     return value;
   }
 }

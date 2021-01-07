@@ -11,7 +11,7 @@ import 'package:dart_style/dart_style.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tuple/tuple.dart';
 import 'package:dio/dio.dart';
-import 'retrofit.dart' as retrofit;
+import 'package:retrofit_flutter/src/retrofit.dart' as retrofit;
 
 class RetrofitOptions {
   final bool autoCastResponse;

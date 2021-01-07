@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     ApiHelper().get15DaysWeatherByArea('西安').then((value) {
       setState(() {
-        _weather = value.toJson().toString();
+        _weather = value.toString();
       });
     });
   }

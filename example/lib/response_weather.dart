@@ -8,9 +8,9 @@ part 'response_weather.g.dart';
 class WeatherRes {
   int statusCode = 200;
   String desc;
-  Result result;
+  // Result result;
 
-  WeatherRes({this.statusCode, this.desc, this.result});
+  WeatherRes({this.statusCode, this.desc});
 
   factory WeatherRes.fromJson(Map<String, dynamic> json) =>
       _$WeatherResFromJson(json);
