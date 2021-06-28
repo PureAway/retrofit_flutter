@@ -3,13 +3,13 @@ import 'package:dio/dio.dart';
 
 /// A holder that includes all http methods which are supported by retrofit.
 class HttpMethod {
-  static const String GET = "GET";
-  static const String POST = "POST";
-  static const String PATCH = "PATCH";
-  static const String PUT = "PUT";
-  static const String DELETE = "DELETE";
-  static const String HEAD = "HEAD";
-  static const String OPTIONS = "OPTIONS";
+  static const String GET = 'GET';
+  static const String POST = 'POST';
+  static const String PATCH = 'PATCH';
+  static const String PUT = 'PUT';
+  static const String DELETE = 'DELETE';
+  static const String HEAD = 'HEAD';
+  static const String OPTIONS = 'OPTIONS';
 }
 
 /// Define how to parse response json
@@ -49,10 +49,10 @@ class RestApi {
   /// When you don't specify the [baseUrl]. The [_dio] instance passed to the constructor should have it defined.
   /// Otherwise the `path` field of any [HttpMethod] like [POST] should have the full URL.
 
-  final String baseUrl;
+  final String? baseUrl;
 
   /// if you don't specify the [parser]. It will be [Parser.JsonSerializable]
-  final Parser parser;
+  final Parser? parser;
 
   const RestApi({this.baseUrl, this.autoCastResponse, this.parser});
 
@@ -60,7 +60,7 @@ class RestApi {
   ///
   /// This is experimental, Currently there's no perfect solution for this.
   @experimental
-  final bool autoCastResponse;
+  final bool? autoCastResponse;
 }
 
 @immutable
@@ -146,7 +146,7 @@ class OPTIONS extends Method {
 /// Adds headers specified in the [value] map.
 @immutable
 class Headers {
-  final Map<String, dynamic> value;
+  final Map<String, dynamic>? value;
 
   const Headers([this.value]);
 }
@@ -192,14 +192,14 @@ class Body {
 /// `foo=Bob+Smith&bar=President`.
 @immutable
 class Field {
-  final String value;
+  final String? value;
 
   const Field([this.value]);
 }
 
 @immutable
 class Url {
-  final String url;
+  final String? url;
 
   const Url([this.url]);
 }
@@ -214,7 +214,7 @@ class BaseUrl {
 /// Path parameters may not be `null`.
 @immutable
 class Path {
-  final String value;
+  final String? value;
 
   const Path([this.value]);
 }
@@ -281,15 +281,15 @@ class MultiPart {
 @immutable
 class Part {
   @Deprecated('future release')
-  final String value;
-  final String name;
+  final String? value;
+  final String? name;
 
   /// If this field is a file, optionally specify it's name. otherwise the name
   /// will be derived from the actual file.
-  final String fileName;
+  final String? fileName;
 
   // To identify the content type of a file
-  final String contentType;
+  final String? contentType;
 
   const Part({this.value, this.name, this.fileName, this.contentType});
 }
