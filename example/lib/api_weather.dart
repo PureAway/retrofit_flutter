@@ -7,9 +7,9 @@ part 'api_weather.g.dart';
 
 @RestApi(baseUrl: 'https://api.apishop.net')
 abstract class WeatherApi {
-  factory WeatherApi(Dio dio, {String baseUrl}) = _WeatherApi;
+  factory WeatherApi(Dio dio) = _WeatherApi;
 
-  @GET("/common/weather/get15DaysWeatherByArea")
+  @GET('/common/weather/get15DaysWeatherByArea')
   Future<dynamic> get15DaysWeatherByArea(@BaseUrl() String baseUrl,
       @Query('apiKey') String apiKey, @Query('area') String area);
 }

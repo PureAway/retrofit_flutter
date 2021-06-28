@@ -7,14 +7,14 @@ part of 'api_weather.dart';
 // **************************************************************************
 
 class _WeatherApi implements WeatherApi {
-  _WeatherApi(this._dio, {this.baseUrl}) {
+  _WeatherApi(this._dio) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'https://api.apishop.net';
+    baseUrl = 'https://api.apishop.net';
   }
 
   final Dio _dio;
 
-  String baseUrl;
+  late String baseUrl;
 
   @override
   Future<dynamic> get15DaysWeatherByArea(baseUrl, apiKey, area) async {
@@ -24,13 +24,11 @@ class _WeatherApi implements WeatherApi {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'apiKey': apiKey, r'area': area};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request('/common/weather/get15DaysWeatherByArea',
+    final _result = await _dio.request(
+        '$baseUrl/common/weather/get15DaysWeatherByArea',
         queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
+        options:
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra),
         data: _data);
     final value = _result.data;
     return value;

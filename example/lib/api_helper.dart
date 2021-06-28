@@ -8,9 +8,11 @@ class ApiHelper {
   ApiHelper.__privateConstructor();
 
   static final ApiHelper _instance = ApiHelper.__privateConstructor();
-  static BaseOptions _options;
-  static Dio _client;
-  static final api = WeatherApi(_client);
+  static BaseOptions? _options;
+  static late Dio _client;
+  static final api = WeatherApi(
+    _client,
+  );
 
   factory ApiHelper() {
     _options = BaseOptions(connectTimeout: 10000, receiveTimeout: 10000);

@@ -8,8 +8,8 @@ part of 'response_weather.dart';
 
 WeatherRes _$WeatherResFromJson(Map<String, dynamic> json) {
   return WeatherRes(
-    statusCode: json['statusCode'] as int,
-    desc: json['desc'] as String,
+    statusCode: json['statusCode'] as int?,
+    desc: json['desc'] as String?,
   );
 }
 

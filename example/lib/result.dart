@@ -6,10 +6,10 @@ part 'result.g.dart';
 
 @JsonSerializable()
 class Result {
-  String area;
-  String areaid;
-  List<Day> dayList;
-  int ret_code;
+  String? area;
+  String? areaid;
+  List<Day>? dayList;
+  int? ret_code;
 
   Result({this.area, this.areaid, this.dayList, this.ret_code});
 

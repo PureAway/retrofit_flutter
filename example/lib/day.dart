@@ -4,20 +4,20 @@ part 'day.g.dart';
 
 @JsonSerializable()
 class Day {
-  String area;
-  String areaid;
-  String day_air_temperature;
-  String day_weather;
-  String day_weather_code;
-  String day_weather_pic;
-  String day_wind_direction;
-  String day_wind_power;
-  String daytime;
-  String night_air_temperature;
-  String night_weather;
-  String night_weather_code;
-  String night_weather_pic;
-  String night_wind_direction;
+  String? area;
+  String? areaid;
+  String? day_air_temperature;
+  String? day_weather;
+  String? day_weather_code;
+  String? day_weather_pic;
+  String? day_wind_direction;
+  String? day_wind_power;
+  String? daytime;
+  String? night_air_temperature;
+  String? night_weather;
+  String? night_weather_code;
+  String? night_weather_pic;
+  String? night_wind_direction;
 
   Day(
       {this.area,

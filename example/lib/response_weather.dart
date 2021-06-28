@@ -6,8 +6,8 @@ part 'response_weather.g.dart';
 
 @JsonSerializable()
 class WeatherRes {
-  int statusCode = 200;
-  String desc;
+  int? statusCode = 200;
+  String? desc;
   // Result result;
 
   WeatherRes({this.statusCode, this.desc});
