@@ -7,4 +7,6 @@
 ## [0.0.4]
 * 更改analyzer版本
 ## [1.0.0]
-* migrate to null safety
+* pre migrate to null safety
+## [1.0.1]
+*release  migrate to null safety

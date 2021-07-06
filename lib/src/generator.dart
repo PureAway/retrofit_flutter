@@ -618,7 +618,7 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
               break;
             case retrofit.Parser.JsonSerializable:
               blocks.add(Code(
-                  'final value = $returnType.fromJson($_resultVar.data);'));
+                  'final value = $returnType.fromJson($_resultVar.data!);'));
               blocks.add(
                   const Code('value.statusCode = $_resultVar.statusCode;'));
               break;
