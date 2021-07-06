@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'api_weather.dart';
 import 'dio_log_interceptor.dart';
-import 'response_weather.dart';
 
 class ApiHelper {
   ApiHelper.__privateConstructor();
@@ -24,6 +23,9 @@ class ApiHelper {
   /// 发送短信验证码
   Future<dynamic> get15DaysWeatherByArea(String area) async {
     const apiKey = 'y2vSiRp765e535d7cf39d0eb2309f204e65bb67d9f6ce82';
-    return api.get15DaysWeatherByArea('https://api.apishop.net', apiKey, area);
+    final _options =
+        Options(sendTimeout: 100000, receiveTimeout: 100000);
+    return api.get15DaysWeatherByArea(
+        'https://api.apishop.net', _options, apiKey, area);
   }
 }

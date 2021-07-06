@@ -659,14 +659,14 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
           .statement);
       final newOptions = refer('newOptions');
       blocks.add(newOptions
-          .property(_extraVar)
+          .property('$_extraVar?')
           .property('addAll')
           .call([extraOptions.remove(_extraVar)!]).statement);
       blocks.add(newOptions
-          .property('headers')
+          .property('headers?')
           .property('addAll')
           .call([extraOptions.remove('headers')!]).statement);
-      return newOptions.property('merge').call([], extraOptions);
+      return newOptions.property('copyWith').call([], extraOptions);
     }
   }
 
@@ -674,7 +674,7 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
     return Method((m) {
       m
         ..name = 'newRequestOptions'
-        ..returns = refer('RequestOptions')
+        ..returns = refer('Options')
 
         /// required parameters
         ..requiredParameters.add(Parameter((p) {
@@ -684,13 +684,7 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
 
         /// add method body
         ..body = const Code('''
-         if (options is RequestOptions) {
-            return options;
-          }
-          if (options == null) {
-            return RequestOptions();
-          }
-          return RequestOptions(
+          return Options(
             method: options.method,
             sendTimeout: options.sendTimeout,
             receiveTimeout: options.receiveTimeout,

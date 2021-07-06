@@ -10,3 +10,5 @@
 * pre migrate to null safety
 ## [1.0.1]
 *release  migrate to null safety
+## [1.0.2]
+*解决自定义Options传参丢失问题
