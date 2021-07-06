@@ -6,3 +6,5 @@
 * 调整工程目录
 ## [0.0.4]
 * 更改analyzer版本
+## [1.0.0]
+* migrate to null safety
