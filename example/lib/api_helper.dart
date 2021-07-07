@@ -23,9 +23,8 @@ class ApiHelper {
   /// 发送短信验证码
   Future<dynamic> get15DaysWeatherByArea(String area) async {
     const apiKey = 'y2vSiRp765e535d7cf39d0eb2309f204e65bb67d9f6ce82';
-    final _options =
-        Options(sendTimeout: 100000, receiveTimeout: 100000);
-    return api.get15DaysWeatherByArea(
-        'https://api.apishop.net', _options, apiKey, area);
+    final _options = Options(sendTimeout: 100000, receiveTimeout: 100000);
+    return api.get15DaysWeatherByArea('https://api.apishop.net', _options,
+        'appId', 'content-type', 'Authorization', apiKey, area);
   }
 }

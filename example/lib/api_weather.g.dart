@@ -17,9 +17,13 @@ class _WeatherApi implements WeatherApi {
   late String baseUrl;
 
   @override
-  Future<dynamic> get15DaysWeatherByArea(baseUrl, options, apiKey, area) async {
+  Future<dynamic> get15DaysWeatherByArea(
+      baseUrl, options, appId, contentType, accountToken, apiKey, area) async {
     ArgumentError.checkNotNull(baseUrl, 'baseUrl');
     ArgumentError.checkNotNull(options, 'options');
+    ArgumentError.checkNotNull(appId, 'appId');
+    ArgumentError.checkNotNull(contentType, 'contentType');
+    ArgumentError.checkNotNull(accountToken, 'accountToken');
     ArgumentError.checkNotNull(apiKey, 'apiKey');
     ArgumentError.checkNotNull(area, 'area');
     const _extra = <String, dynamic>{};
@@ -27,11 +31,15 @@ class _WeatherApi implements WeatherApi {
     final _data = <String, dynamic>{};
     final newOptions = newRequestOptions(options);
     newOptions.extra?.addAll(_extra);
-    newOptions.headers?.addAll(<String, dynamic>{});
+    newOptions.headers?.addAll(<String, dynamic>{
+      r'appId': appId,
+      r'content-type': contentType,
+      r'Authorization': accountToken
+    });
     final _result = await _dio.request(
         '$baseUrl/common/weather/get15DaysWeatherByArea',
         queryParameters: queryParameters,
-        options: newOptions.copyWith(method: 'GET'),
+        options: newOptions.copyWith(method: 'GET', contentType: contentType),
         data: _data);
     final value = _result.data;
     return value;
@@ -42,8 +50,8 @@ class _WeatherApi implements WeatherApi {
       method: options.method,
       sendTimeout: options.sendTimeout,
       receiveTimeout: options.receiveTimeout,
-      extra: options.extra,
-      headers: options.headers,
+      extra: options.extra ?? {},
+      headers: options.headers ?? {},
       responseType: options.responseType,
       contentType: options.contentType.toString(),
       validateStatus: options.validateStatus,

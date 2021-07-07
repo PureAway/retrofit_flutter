@@ -12,3 +12,5 @@
 *release  migrate to null safety
 ## [1.0.2]
 *解决自定义Options传参丢失问题
+## [1.0.3]
+*解决自定义Options与Header共存时传参丢失问题

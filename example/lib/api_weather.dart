@@ -12,5 +12,8 @@ abstract class WeatherApi {
   @GET('/common/weather/get15DaysWeatherByArea')
   Future<dynamic> get15DaysWeatherByArea(@BaseUrl() String baseUrl,
       @DioOptions() Options options,
+      @Header('appId')String appId,
+      @Header('content-type') String contentType,
+      @Header('Authorization') String accountToken,
       @Query('apiKey') String apiKey, @Query('area') String area);
 }
