@@ -16,3 +16,5 @@
 *解决自定义Options与Header共存时传参丢失问题
 ## [1.0.4]
 *适配build、json_serializable版本
+## [1.0.5]
+*update license
